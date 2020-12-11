@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suicide Rates</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="filterStyles.css">
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -21,7 +25,58 @@
           <p class="lead">Do not commit</p>
         </section>
         <section id="map">
-          <h1>Map</h1>
+          
+          <div style="margin-top: 120px;margin-left: 60px; float: left;width:20%;">
+            <div class="slidecontainer">
+              1986 <input style="width:70%" type="range" min="1986" max="2015" value="1999" class="slider" id="myRange"> 2015
+            </div>
+            <div style="margin-top: 20px" id="yearValue">Year = 1999</div>
+
+            <div style="margin-top: 50px">
+              <!--<button id="displayAge" onclick="showAge()"></button>-->
+              <img src="images/triangle.png" style="height: 10px" onclick="showAge()">
+              <label>Age</label>
+              <ul id="ageCheckboxes" style="display: none">
+                  <li><input type="checkbox" checked> >25</li>
+                  <li><input type="checkbox" checked> 25-34</li>
+                  <li><input type="checkbox" checked> 35-54</li>
+                  <li><input type="checkbox" checked> 54+</li>
+              </ul>
+            </div>
+
+            <div style="margin-top: 10px">
+              <!--<button id="displaySex" onclick="showSex()"></button>-->
+              <img src="images/triangle.png" style="height: 10px" onclick="showSex()">
+              <label>Sex</label>
+              <ul id="sexCheckboxes" style="display: none">
+                  <li><input type="checkbox" checked> Male</li>
+                  <li><input type="checkbox" checked> Female</li>
+              </ul>
+            </div>
+
+            <div style="margin-top: 10px">
+              <!--<button id="displayRegion" onclick="showRegion()"></button>-->
+              <img src="images/triangle.png" style="height: 10px" onclick="showRegion()">
+              <label>Countries</label>
+              <ul id="regionCheckboxes" style="display: none">
+                  <li><input type="checkbox" checked> Africa</li>
+                  <li><input type="checkbox" checked> Asia</li>
+                  <li><input type="checkbox" checked> America</li>
+                  <li><input type="checkbox" checked> Europe</li>
+              </ul>
+            </div>
+
+            <button onclick="updateData()"> UPDATE </button>
+        </div>
+        
+        <div style="float:right; margin-left:100px; width:100%; height: 100%;">
+          <svg id="my_dataviz" ></svg>
+        </div>
+
+        <script  src="filters.js"></script>
+        <script  src="data.js"></script>
+        <script  src="map.js"></script>
+
         </section>
         <section id="graph">
           <h1>Graphs</h1>
