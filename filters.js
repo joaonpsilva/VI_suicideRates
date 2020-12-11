@@ -3,6 +3,11 @@
 var yearSelected = 1999
 var filterSex = ['male', 'female'];
 var filterAges = ['5-14 years', '15-24 years','25-34 years','35-54 years','55-74 years', '75+ years'];
+
+function updateFilters(){
+    //check CheckBoxes
+    updateData();
+}
 //var filterCountrys
 
 // Year slide show values
