@@ -1,9 +1,9 @@
 
 // The svg
-var width = document.getElementById('my_dataviz').parentElement.clientWidth;
-var height = document.getElementById('my_dataviz').parentElement.clientHeight;
+var width = document.getElementById('mapViz').parentElement.clientWidth;
+var height = document.getElementById('mapViz').parentElement.clientHeight;
 
-var svg = d3.select("svg")
+var svg = d3.select("#mapViz")
   .attr('width', width)
   .attr('height', height*0.9)
 
@@ -83,4 +83,23 @@ function ready(error, topo) {
           return colorScale(per100k);
         }
       });
-    }
+
+
+      var pieData1 = {'male': 0, 'female':0};
+      var pieData2 = {'5-14':0, '15-24':0,'25-34':0,'35-54':0,'55-74':0, '75+':0};
+      
+      for (var key in data){
+          pieData1['male'] += data[key].perSex['male'];
+          pieData1['female'] += data[key].perSex['female'];
+
+          pieData2['5-14'] += data[key].perAge['5-14 years'];
+          pieData2['15-24'] += data[key].perAge['15-24 years'];
+          pieData2['25-34'] += data[key].perAge['25-34 years'];
+          pieData2['35-54'] += data[key].perAge['35-54 years'];
+          pieData2['55-74'] += data[key].perAge['55-74 years'];
+          pieData2['75+'] += data[key].perAge['75+ years'];
+      }
+      updatePie(svgPie1, pieData1);
+      updatePie(svgPie2, pieData2);
+
+}
