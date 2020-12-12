@@ -33,20 +33,25 @@
             </div>
             <div style="margin-top: 20px" id="yearValue">Year = 1999</div>
 
+
+              <!--AGE CHECKBOXES -->
             <div style="margin-top: 50px">
               <!--<button id="displayAge" onclick="showAge()"></button>-->
               <img src="images/triangle.png" style="height: 10px" onclick="showAge()">
               <label>Age</label>
               <ul id="ageCheckboxes" style="display: none">
-                  <li><input type="checkbox" checked> >25</li>
-                  <li><input type="checkbox" checked> 25-34</li>
-                  <li><input type="checkbox" checked> 35-54</li>
-                  <li><input type="checkbox" checked> 54+</li>
+                  <li><input type="checkbox" checked onchange="checkBoxAge(this)" value="5-14 years">5-14</li>
+                  <li><input type="checkbox" checked onchange="checkBoxAge(this)" value="15-24 years">15-24</li>
+                  <li><input type="checkbox" checked onchange="checkBoxAge(this)" value="25-34 years">25-34</li>
+                  <li><input type="checkbox" checked onchange="checkBoxAge(this)" value="35-54 years">35-54</li>
+                  <li><input type="checkbox" checked onchange="checkBoxAge(this)" value="55-74 years">55-74</li>
+                  <li><input type="checkbox" checked onchange="checkBoxAge(this)" value="75+ years">75+</li>
               </ul>
             </div>
 
-            <div style="margin-top: 10px">
-              <!--<button id="displaySex" onclick="showSex()"></button>-->
+
+              <!--SEX CHECKBOXES -->
+              <div style="margin-top: 10px">
               <img src="images/triangle.png" style="height: 10px" onclick="showSex()">
               <label>Sex</label>
               <ul id="sexCheckboxes" style="display: none">
@@ -55,8 +60,9 @@
               </ul>
             </div>
 
-            <div style="margin-top: 10px">
-              <!--<button id="displayRegion" onclick="showRegion()"></button>-->
+
+              <!--REGION CHECKBOXES -->
+              <div style="margin-top: 10px">
               <img src="images/triangle.png" style="height: 10px" onclick="showRegion()">
               <label>Countries</label>
               <ul id="regionCheckboxes" style="display: none">

@@ -10,6 +10,21 @@ function updateFilters(){
 }
 //var filterCountrys
 
+function checkBoxAge(box){
+
+    if (box.checked) {
+        // Add element
+        filterAges.push(box.value)
+    } else {
+        // Remove element
+        var index = filterAges.indexOf(box.value);
+        filterAges.splice(index, 1);
+    }
+    updateFilters()
+}
+
+
+
 // Year slide show values
 var slider = document.getElementById("myRange");
 var output = document.getElementById("yearValue");
@@ -19,6 +34,7 @@ var output = document.getElementById("yearValue");
 slider.oninput = function() {
     output.innerHTML = "Year = " + this.value;
     yearSelected = this.value;
+    updateFilters()
 }
 
 ///////////////////////////////////////////////////////////////////////////
