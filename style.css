@@ -22,7 +22,7 @@
   }
   
   .lead {
-    font-size: 1.5rem;
+    font-size: 3rem;
   }
   
   .navbar {
@@ -87,7 +87,7 @@
   
   /* Section Images */
   section#home {
-    background: url('https://cdn.downtoearth.org.in/library/large/2019-09-09/0.28009000_1568031518_gettyimages-984719398-170667a.jpg') no-repeat center center/cover;;
+    background: url('https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/01/08/10/aokigahara-forest.jpg') no-repeat center center/cover;;
   }
 
   section#authors {
