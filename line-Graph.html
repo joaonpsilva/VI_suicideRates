@@ -1,20 +1,33 @@
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <!--script src="https://d3js.org/d3.v5.min.js"></script-->
+
     <script type="text/javascript" src="https://d3js.org/d3.v5.js"></script>
+
+    <svg id="mapViz" ></svg>
+    <div id='tooltip' style='position:absolute;background-color:white;padding:5px'></div>
 
     <style type="text/css">
         .axis path {
             fill: none;
             stroke: black;
         }
+        .axisO path {
+            fill: none;
+            stroke: orangered;
+        }
+        .axisG path {
+            fill: none;
+            stroke: green;
+        }
 
         .axis {
             font-size: 8pt;
-            font-family: sans-serif;
+            font-family: 'Times New Roman', Times, serif;
         }
 
         .tick {
@@ -22,21 +35,35 @@
             stroke: black;
         }
 
-        circle {
-            stroke: black;
-            stroke-width: 0.5px;
-            fill: RoyalBlue;
-            opacity: 0.6;
-        }
-
         path {
             fill:none;
             stroke:black;
-            stroke-width:2px;
+            stroke-width:1px;
         }
 
-        path.linha_alunos{
-            stroke:DeepPink;
+        path.linha_suicides{
+            stroke:orangered;
+        }
+
+        path.linha_gdp{
+            stroke:green;
+        }
+
+        .focus circle {
+            fill: steelblue;
+        }
+
+        .focus text {
+            font-size: 14px;
+        }
+
+        .tooltip {
+            fill: white;
+            stroke: #000;
+        }
+
+        .tooltip-date, .tooltip-likes {
+            font-weight: bold;
         }
 
     </style>
@@ -44,8 +71,7 @@
     <script>
         function draw(data) {
 
-            console.log(data)
-            var pais = "Portugal"
+            var pais = "USA"
             var dados = []
 
 
@@ -56,41 +82,35 @@
                 }
             }
 
-            dados = dados.reduce((a, {year, suicides_no}) => {
-                a[year] = a[year] || {year, suicides_no: 0};
+            dados = dados.reduce((a, {year, suicides_no, gdp_per_capita}) => {
+                a[year] = a[year] || {year, suicides_no: 0, gdp_per_capita};
                 a[year].suicides_no += parseInt(suicides_no);
                 return a;
             }, [])
 
             data = []
             for (var entry in dados) {
-                data.push({"Ano": dados[entry]["year"] ,"Numero_de_Alunos": dados[entry]["suicides_no"]})
+                data.push({"year": parseInt(dados[entry]["year"]) ,"suicides": dados[entry]["suicides_no"], "gdpPerCap":parseInt(dados[entry]["gdp_per_capita"])})
             }
-            console.log(data)
 
 
-
-
-            let width = 500;
+            let width = 1500;
             let height = 300;
             let margin = 50;
+            let xmargin = 100
 
             // código de visualização
-            let svg = d3.select('body').append('svg')
+            var svg = d3.select("#mapViz")
                 .attr('width', width)
                 .attr('height', height)
-            //.style('background', 'teal');
 
+            const tooltip = d3.select('#tooltip');
+            const tooltipLine = svg.append('line');
             // X Scale
-            // let x_extent = [0, data.length];
+            let x_extent = d3.extent(data, function (d) { return d.year });
             let x_scale = d3.scaleLinear()
-                .range([margin, width - margin])
-                .domain([0, data.length]);
-            /*let x_scale = d3.scalePoint()
-                .range([margin, width - margin])
-                .padding(0.5)
-                .domain(["1º ano", "2º ano", "3º ano", "4º ano", "5º ano"]);*/
-
+                .range([xmargin, width - xmargin])
+                .domain(x_extent);
 
             // X Axis
             let x_axis = d3.axisBottom(x_scale);
@@ -101,8 +121,7 @@
                 .call(x_axis);
 
             // Y Scale
-            let y_extent = d3.extent(data, function (d) { return d.Numero_de_Alunos });
-            y_extent[0] = 0;
+            let y_extent = d3.extent(data, function (d) { return d.suicides });
             let y_scale = d3.scaleLinear()
                 .range([height - margin, margin])
                 .domain(y_extent);
@@ -110,51 +129,111 @@
             // Y Axis
             let y_axis = d3.axisLeft(y_scale);
             d3.select("svg").append("g")
-                .attr("class", "y axis")
-                .attr("transform", "translate(" + margin + ", 0)")
+                .attr("class", "y axisO")
+                .attr("transform", "translate(" + xmargin + ", 0)")
                 .call(y_axis);
 
-            let circles = svg.selectAll("circle")
-                .data(data)
-                .enter()
-                .append("circle")
-                .attr("cx", function (d, i) {
-                    return x_scale(i);
-                })
-                .attr("cy", function (d) {
-                    return y_scale(d.Numero_de_Alunos);
-                })
-                .attr("r", function (d) {
-                    return 10;
-                });
+            // Y2 Scale
+            let y_extent2 = d3.extent(data, function (d) {return d.gdpPerCap });
+            let y_scale2 = d3.scaleLinear()
+                .range([height - margin, margin])
+                .domain(y_extent2);
+
+            // Y2 Axis
+            let y_axis2 = d3.axisRight(y_scale2);
+            d3.select("svg").append("g")
+                .attr("class", "y axisG")
+                .attr("transform", "translate(" + (width-xmargin) +  ", 0)")
+                .call(y_axis2);
+
+
+            console.log(data)
+            // Line
+            let linesuicides = d3.line()
+                .x(function (d) { return x_scale(d.year) })
+                .y(function (d) { return y_scale(d.suicides) });
 
             // Line
-            let line = d3.line()
-                .x(function (d, i) { return x_scale(i) })
-                .y(function (d) { return y_scale(d.Numero_de_Alunos) });
+            let linegdp = d3.line()
+                .x(function (d) { return x_scale(d.year) })
+                .y(function (d) { return y_scale2(d.gdpPerCap) });
+
 
             d3.select("svg").append("path")
-                .attr("d", line(data))
-                .attr("class", "linha_alunos");
+                .attr("d", linesuicides(data))
+                .attr("class", "linha_suicides");
+            d3.select("svg").append("path")
+                .attr("d", linegdp(data))
+                .attr("class", "linha_gdp");
 
             d3.select("svg").append("text")
-                .text("Alunos do MIECT")
+                .text("Suicides over the years")
                 .attr("x", (width / 2) - margin)
                 .attr("y", margin / 2)
                 .attr("fill", "red");
 
-
             d3.select("svg").append("text")
-                .text("Anos de curso")
+                .text("Years")
                 .attr("x", (width / 2) - margin)
                 .attr("y", height - margin / 3);
 
             d3.select("svg").append("text")
-                .text("N. de alunos")
+                .text("Suicides")
                 .attr("x", 0)
                 .attr("y", 0)
-                .attr("transform", "rotate (90, 0, 0) translate(100, -10)");
+                .attr("transform", "rotate (90, 0, 0) translate(100, -" + (xmargin-60) +")");
+
+            d3.select("svg").append("text")
+                .text("GDP per cap")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("transform", "rotate (90, 0, 0) translate(100, -" + (width-xmargin + 50) +")");
+
+
+            tipBox = svg.append('rect')
+                .attr('width', width-2*xmargin)
+                .attr('height', height)
+                .attr('opacity', 0)
+                .attr("transform", "translate(" + xmargin +", 0)")
+                .on('mousemove', drawTooltip)
+                .on('mouseout', removeTooltip);
+
+            function removeTooltip() {
+                if (tooltip) tooltip.style('display', 'none');
+                if (tooltipLine) tooltipLine.attr('stroke', 'none');
+            }
+
+            function drawTooltip() {
+                const year = Math.floor((x_scale.invert(d3.mouse(tipBox.node())[0] + xmargin)));
+
+                console.log(d3.mouse(tipBox.node())[0])
+                console.log(year)
+                tooltipLine.attr('stroke', 'black')
+                    .attr('x1', x_scale(year))
+                    .attr('x2', x_scale(year))
+                    .attr('y1', 0)
+                    .attr('y2', height);
+
+                tooltip.html(year)
+                    .style('display', 'block')
+                    .style('left', (d3.event.pageX + 20) + "px")
+                    .style('top', (d3.event.pageY) + "px");
+
+                let suicides;
+                let gdp;
+                data.forEach(function (item, index) {
+                    if (item.year == year){
+                        suicides = item.suicides;
+                        gdp = item.gdpPerCap;
+                    }
+                });
+                tooltip.append('div').style('color','orangered').html("Suicides: " + suicides);
+                tooltip.append('div').style('color','green').html("GDP per cap. " + gdp);
+
+            }
+
         }
+
 
     </script>
 </head>
