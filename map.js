@@ -32,6 +32,9 @@ function updateData(){
     .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
     .defer(d3.csv, "master.csv",
       function(d){
+          if (!filterCountries.includes(d.country)){
+            return;
+          }
           if (d.year != yearSelected){
             return;
           }

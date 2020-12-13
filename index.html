@@ -29,7 +29,7 @@
           
           <div style="margin-top: 120px;margin-left: 60px; float: left;width:20%;">
             <div class="slidecontainer">
-              1986 <input style="width:70%" type="range" min="1986" max="2015" value="1999" class="slider" id="myRange"> 2015
+              1985 <input style="width:70%" type="range" min="1985" max="2016" value="1999" class="slider" id="myRange"> 2016
             </div>
             <div style="margin-top: 20px" id="yearValue">Year = 1999</div>
 
@@ -37,7 +37,7 @@
               <!--AGE CHECKBOXES -->
             <div style="margin-top: 50px">
               <!--<button id="displayAge" onclick="showAge()"></button>-->
-              <img src="images/triangle.png" style="height: 10px" onclick="showAge()">
+              <img src="images/orange_triangle.png" style="height: 10px" onclick="showAge(this)">
               <label>Age</label>
               <ul id="ageCheckboxes" style="display: none">
                   <li><input type="checkbox" checked onchange="checkBoxAge(this)" value="5-14 years">5-14</li>
@@ -52,24 +52,24 @@
 
               <!--SEX CHECKBOXES -->
               <div style="margin-top: 10px">
-              <img src="images/triangle.png" style="height: 10px" onclick="showSex()">
+              <img src="images/orange_triangle.png" style="height: 10px" onclick="showSex(this)">
               <label>Sex</label>
               <ul id="sexCheckboxes" style="display: none">
-                  <li><input type="checkbox" checked> Male</li>
-                  <li><input type="checkbox" checked> Female</li>
+                  <li><input type="checkbox" checked onchange="checkBoxSex(this)" value="male"> Male</li>
+                  <li><input type="checkbox" checked onchange="checkBoxSex(this)" value="female"> Female</li>
               </ul>
             </div>
 
 
               <!--REGION CHECKBOXES -->
               <div style="margin-top: 10px">
-              <img src="images/triangle.png" style="height: 10px" onclick="showRegion()">
+              <img src="images/orange_triangle.png" style="height: 10px" onclick="showRegion(this)">
               <label>Countries</label>
               <ul id="regionCheckboxes" style="display: none">
-                  <li><input type="checkbox" checked> Africa</li>
-                  <li><input type="checkbox" checked> Asia</li>
-                  <li><input type="checkbox" checked> America</li>
-                  <li><input type="checkbox" checked> Europe</li>
+                  <li><input type="checkbox" checked onchange="checkBoxRegion(this)" value="Africa"> Africa</li>
+                  <li><input type="checkbox" checked onchange="checkBoxRegion(this)" value="Asia"> Asia</li>
+                  <li><input type="checkbox" checked onchange="checkBoxRegion(this)" value="America"> America</li>
+                  <li><input type="checkbox" checked onchange="checkBoxRegion(this)" value="Europe"> Europe</li>
               </ul>
             </div>
 
