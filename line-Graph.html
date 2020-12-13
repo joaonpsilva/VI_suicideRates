@@ -82,15 +82,20 @@
                 }
             }
 
+            console.log(data[0])
+
+            var i = 0
             dados = dados.reduce((a, {year, suicides_no, gdp_per_capita}) => {
-                a[year] = a[year] || {year, suicides_no: 0, gdp_per_capita};
+                a[year] = a[year] || {year, suicides_no: 0, gdp_per_capita: 0};
                 a[year].suicides_no += parseInt(suicides_no);
+                a[year].gdp_per_capita += parseInt(gdp_per_capita);
                 return a;
             }, [])
 
             data = []
             for (var entry in dados) {
                 data.push({"year": parseInt(dados[entry]["year"]) ,"suicides": dados[entry]["suicides_no"], "gdpPerCap":parseInt(dados[entry]["gdp_per_capita"])})
+                console.log(dados[entry])
             }
 
 
@@ -207,7 +212,7 @@
                 const year = Math.floor((x_scale.invert(d3.mouse(tipBox.node())[0] + xmargin)));
 
                 console.log(d3.mouse(tipBox.node())[0])
-                console.log(year)
+                //console.log(year)
                 tooltipLine.attr('stroke', 'black')
                     .attr('x1', x_scale(year))
                     .attr('x2', x_scale(year))
