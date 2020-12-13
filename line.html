@@ -53,7 +53,7 @@
 
         console.log(data)
 
-            // Add X axis --> it is a date format
+            // Add X axis
             var x = d3.scaleLinear()
                 .domain([d3.min(data, function(d) { return d.year; }),d3.max(data, function(d) { return d.year; })])
                 .range([ 0, width ]);
@@ -68,16 +68,46 @@
             svg.append("g")
                 .call(d3.axisLeft(y));
 
-            // Add the line
+
+        // Set the gradient
+            // Max value observed:
+        const max = d3.max(data, function(d) { return +d.suicides; })
+        const min = d3.min(data, function(d) { return d.suicides; })
+        svg.append("linearGradient")
+            .attr("id", "line-gradient")
+            .attr("gradientUnits", "userSpaceOnUse")
+            .attr("x1", 0)
+            .attr("y1", y(min))
+            .attr("x2", 0)
+            .attr("y2", y(max))
+            .selectAll("stop")
+            .data([
+                {offset: "0%", color: "blue"},
+                {offset: "100%", color: "red"}
+            ])
+            .enter().append("stop")
+            .attr("offset", function(d) { return d.offset; })
+            .attr("stop-color", function(d) { return d.color; });
+
+
+
+
+
+
+
+
+        // Add the line
             svg.append("path")
                 .datum(data)
                 .attr("fill", "none")
-                .attr("stroke", "steelblue")
+                .attr("stroke", "url(#line-gradient)")
                 .attr("stroke-width", 1.5)
                 .attr("d", d3.line()
                     .x(function(d) { return x(d.year) })
                     .y(function(d) { return y(d.suicides) })
                 )
+
+
 
 
 
