@@ -64,7 +64,16 @@ function updatePie(svgPie, pieData){
         .merge(u)
         .transition()
         .duration(1000)
-        .text(function(d){ return d.data.key})
+        .text(function(d) {
+            console.log(d.data.key)
+            if (filterAges.includes(d.data.key + " years")) {
+                return d.data.key
+            }
+            if (filterSex.includes(d.data.key)){
+                return d.data.key
+            }
+
+        })
         .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
         .style("text-anchor", "middle")
         .style("font-size", 17)
