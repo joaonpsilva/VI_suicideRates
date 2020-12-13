@@ -80,9 +80,6 @@ function checkBoxRegion(box){
 
 }
 
-
-
-
 // Year slide show values
 var slider = document.getElementById("myRange");
 var output = document.getElementById("yearValue");

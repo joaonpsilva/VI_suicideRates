@@ -149,6 +149,8 @@ function drawTooltip() {
     tooltip.html(year)
         .style('color', 'black')
         .style('display', 'block')
+        .style("font-size", '30px')
+        .style("font-weight", 'bolder')
         .style('left', (d3.event.pageX + 20) + "px")
         .style('top', (d3.event.pageY) + "px");
 
@@ -160,7 +162,12 @@ function drawTooltip() {
             gdp = item.gdpPerCap;
         }
     });
-    tooltip.append('div').style('color','orangered').html("Suicides: " + suicides);
-    tooltip.append('div').style('color','green').html("GDP per cap. " + gdp);
+    tooltip.append('div');
+    tooltip.append('text').text("Suicides: ").style('color','orangered').style("font-size", '20px');
+    tooltip.append('text').text(suicides).style('color','black').style("font-weight", 'normal').style("font-size", '20px');
+
+    tooltip.append('div')
+    tooltip.append('text').text("GDP per capita: ").style('color','green').style("font-size", '20px');
+    tooltip.append('text').text(gdp.toFixed(2)).style('color','black').style("font-weight", 'normal').style("font-size", '20px');
 
 }

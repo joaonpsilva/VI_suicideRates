@@ -101,13 +101,25 @@ function ready(error, topo) {
           .style('color', 'black')
           .style("font-size", '30px')
           .style('display', 'block')
+          .style("font-weight", 'bolder')
           .style('left', (d3.event.pageX + 20) + "px")
           .style('top', (d3.event.pageY) + "px");
 
-          tooltipMap.append("div").style("font-size", '18px').html("Population: " + d.properties.population);
-          tooltipMap.append("div").style("font-size", '18px').html("Suicides: " + d.properties.suicides);
-          tooltipMap.append("div").style("font-size", '18px').html("Suicides p/ 100k: " + d.properties.suicidesPerCapita);
-          tooltipMap.append("div").style("font-size", '18px').html("Gdp p/ Capita: " + d.properties.gdpPerCap);
+          tooltipMap.append("div");
+          tooltipMap.append('text').text("Population: ").style("font-size", '18px');
+          tooltipMap.append('text').text(d.properties.population).style("font-size", '18px').style("font-weight", 'normal');
+
+          tooltipMap.append("div");
+          tooltipMap.append('text').text("Suicides: ").style("font-size", '18px');
+          tooltipMap.append('text').text(d.properties.suicides).style("font-size", '18px').style("font-weight", 'normal');
+
+          tooltipMap.append("div");
+          tooltipMap.append('text').text("Suicides p/ 100k: ").style("font-size", '18px');
+          tooltipMap.append('text').text(d.properties.suicidesPerCapita.toFixed(2)).style("font-size", '18px').style("font-weight", 'normal');
+
+          tooltipMap.append("div");
+          tooltipMap.append('text').text("Gdp p/ Capita: ").style("font-size", '18px');
+          tooltipMap.append('text').text(d.properties.gdpPerCap).style("font-size", '18px').style("font-weight", 'normal');
 
       })
       .on('mouseout', function(d){
