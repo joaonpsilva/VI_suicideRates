@@ -28,22 +28,32 @@ updateData();
 
 function updateData(){
   data = {}
+  dataLine = {}
+
   d3.queue()
     .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
     .defer(d3.csv, "master.csv",
       function(d){
-          if (!filterCountries.includes(d.country)){
-            return;
+          if (!filterCountries.includes(d.country)) return;
+          
+          //------------LINECHART
+          if (!(d.year in dataLine) ){
+            dataLine[d.year] = {"suicides":0,"population":0, "gdp":0, "countries":[]};
           }
-          if (d.year != yearSelected){
-            return;
+          dataLine[d.year]["population"] += parseInt(d.population);
+          if (!(dataLine[d.year]["countries"].includes(d.country))){
+            dataLine[d.year]["gdp"] += parseInt(d.gdp_for_year);
+            dataLine[d.year]["countries"].push(d.country);
           }
-          if (!filterSex.includes(d.sex)){
-            return;
-          }
-          if (!filterAges.includes(d.age)){
-            return;
-          }
+          //------------------------------
+          
+          if (!filterSex.includes(d.sex))return;
+          
+          if (!filterAges.includes(d.age))return;
+          
+          dataLine[d.year]["suicides"]+=parseInt(d.suicides_no);
+
+          if (d.year != yearSelected)return;
 
           if (d.country in data){
             var c = data[d.country];
@@ -104,5 +114,5 @@ function ready(error, topo) {
       }
       updatePie(svgPie1, pieData1);
       updatePie(svgPie2, pieData2);
-
+      updateLine()
 }

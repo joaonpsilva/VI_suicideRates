@@ -1,0 +1,52 @@
+.axis path {
+    fill: none;
+    stroke: white;
+}
+.axisO path {
+    fill: none;
+    stroke: orangered;
+}
+.axisG path {
+    fill: none;
+    stroke: green;
+}
+
+.axis {
+    font-size: 8pt;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.tick {
+    fill: none;
+    stroke: white;
+}
+
+
+path.linha_suicides{
+    fill:none;
+    stroke:orangered;
+    stroke-width: 5px;
+}
+
+path.linha_gdp{
+    fill:none;
+    stroke:green;
+    stroke-width: 5px;
+}
+
+.focus circle {
+fill: steelblue;
+}
+
+.focus text {
+font-size: 14px;
+}
+
+.tooltip {
+fill: white;
+stroke: #000;
+}
+
+.tooltip-date, .tooltip-likes {
+font-weight: bold;
+}

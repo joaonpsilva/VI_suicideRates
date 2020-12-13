@@ -35,3 +35,4 @@ class Country {
 }
 
 var data = {};
+var dataLine = {};

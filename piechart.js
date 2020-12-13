@@ -3,6 +3,7 @@ var width = document.getElementById('mapViz').parentElement.clientWidth
     height = document.getElementById('mapViz').parentElement.clientHeight
     margin = 40
 
+
 // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
 var radius = Math.min(width/2.5, height/2.5) / 2 - margin
 
@@ -45,7 +46,7 @@ function updatePie(svgPie, pieData){
         .append('path')
         .merge(u)
         .transition()
-        .duration(1000)
+        .duration(2000)
         .attr('d', arcGenerator)
         .attr('fill', function(d){ return(color(d.data.key)) })
         .attr("stroke", "white")
