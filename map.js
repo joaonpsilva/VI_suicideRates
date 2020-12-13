@@ -44,6 +44,9 @@ function updateData(){
           if (!filterAges.includes(d.age)){
             return;
           }
+          if (!filterCountries.includes(d.country)){
+              return
+          }
 
           if (d.country in data){
             var c = data[d.country];
@@ -65,7 +68,7 @@ function updateData(){
 function ready(error, topo) {
 
   // Draw the map
-  console.log(data);
+  //console.log(data);
   svg.append("g")
     .selectAll("path")
     .data(topo.features)
@@ -81,11 +84,19 @@ function ready(error, topo) {
         //console.log(d.properties.name in data);
 
         if (d.properties.name in data){
-          var c = data[d.properties.name];
-          var per100k = 100000 * c.ctotal / c.cpopulation;
-          return colorScale(per100k);
+            var c = data[d.properties.name];
+            var per100k = 100000 * c.ctotal / c.cpopulation;
+
+            d.properties.suicides = c.total
+            d.properties.suicidesPerCapita = per100k
+            d.properties.population = c.population
+            return colorScale(per100k);
         }
-      });
+      })
+      // On click event function for map
+      .on('click', function(d){
+          console.log(d)
+      })
 
 
       var pieData1 = {'male': 0, 'female':0};
