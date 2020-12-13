@@ -7,9 +7,8 @@ var svg = d3.select("#mapViz")
   .attr('width', width)
   .attr('height', height*0.9)
 
-/*   width = +svg.attr("width"),
-  height = +svg.attr("height");
-*/
+var tooltipMap = d3.select('#tooltipMap');
+
 // Map and projection
 var path = d3.geoPath();
 var projection = d3.geoMercator()
@@ -64,6 +63,8 @@ function updateData(){
           c.addPerAge(d.age, parseFloat(d.suicides_no));
           c.addPerSex(d.sex, parseFloat(d.suicides_no));
           c.addPopulation(parseFloat(d.population));
+          c.setGdp(d.gdp_for_year);
+          c.setGdpPerCap(d.gdp_per_capita);
           data[d.country] = c;
 
 
@@ -88,20 +89,42 @@ function ready(error, topo) {
       )
       // set the color of each country
       .attr("fill", function (d) {
-        //console.log(d.properties.name);
-        //console.log(d.properties.name in data);
         return getColor(d);
-
       })
       // On click event function for map
       .on('mouseover', function(d){
           console.log(d)
           d3.select(this).attr("fill","Turquoise")
+
+          
+          tooltipMap.html(d.properties.name)
+          .style('color', 'black')
+          .style("font-size", '30px')
+          .style('display', 'block')
+          .style('left', (d3.event.pageX + 20) + "px")
+          .style('top', (d3.event.pageY) + "px");
+
+          tooltipMap.append("div").style("font-size", '18px').html("Population: " + d.properties.population);
+          tooltipMap.append("div").style("font-size", '18px').html("Suicides: " + d.properties.suicides);
+          tooltipMap.append("div").style("font-size", '18px').html("Suicides p/ 100k: " + d.properties.suicidesPerCapita);
+          tooltipMap.append("div").style("font-size", '18px').html("Gdp p/ Capita: " + d.properties.gdpPerCap);
+
       })
       .on('mouseout', function(d){
         console.log(d)
         d3.select(this).attr("fill",getColor(d))
-    })
+        if (tooltipMap) tooltipMap.style('display', 'none');
+
+      })
+      .on("click", function(d){
+        filterCountries = [d.properties.name]
+        document.getElementById("aficaCB").checked = false;
+        document.getElementById("asiaCB").checked = false;
+        document.getElementById("americaCB").checked = false;
+        document.getElementById("europeCB").checked = false;
+
+        updateData()
+      })
 
       var pieData1 = {'male': 0, 'female':0};
       var pieData2 = {'5-14':0, '15-24':0,'25-34':0,'35-54':0,'55-74':0, '75+':0};
@@ -130,6 +153,8 @@ function getColor(d){
     d.properties.suicides = c.total
     d.properties.suicidesPerCapita = per100k
     d.properties.population = c.population
+    d.properties.gdp = c.cgdp
+    d.properties.gdpPerCap = c.cgdpPerCap
     return colorScale(per100k);
   }
   return "black"

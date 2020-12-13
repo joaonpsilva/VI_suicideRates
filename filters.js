@@ -63,6 +63,9 @@ function checkBoxSex(box){
 }
 
 function checkBoxRegion(box){
+    if (filterCountries.length == 1){
+        filterCountries = []
+    }
 
     if (box.checked) {
         // Add element
@@ -74,8 +77,6 @@ function checkBoxRegion(box){
         } );
     }
     updateData()
-
-
 
 }
 

@@ -5,7 +5,9 @@ class Country {
       this.per100k = 0;
       this.perSex = {'male': 0, "female":0};
       this.perAge = {'5-14 years':0, '15-24 years':0,'25-34 years':0,'35-54 years':0,'55-74 years':0, '75+ years':0};
-      this.population = 0; 
+      this.population = 0;
+      this.gdp = 0
+      this.gdpPerCap = 0
     }
     get cname() {
       return this.name;
@@ -13,6 +15,12 @@ class Country {
   
     get ctotal(){
       return this.total;
+    }
+    get cgdp(){
+      return this.gdp;
+    }
+    get cgdpPerCap(){
+      return this.gdpPerCap;
     }
   
     get cpopulation(){
@@ -31,6 +39,16 @@ class Country {
     addPerAge(age, n){
       this.perAge[age] += n;
       this.total += n;
+    }
+
+    setPer100k(val){
+      this.per100k = val;
+    }
+    setGdp(val){
+      this.gdp = val;
+    }
+    setGdpPerCap(val){
+      this.gdpPerCap = val;
     }
 }
 

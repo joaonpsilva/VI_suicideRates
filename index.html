@@ -68,10 +68,10 @@
               <img src="images/orange_triangle.png" style="height: 10px" onclick="showRegion(this)">
               <label>Countries</label>
               <ul id="regionCheckboxes" style="display: none">
-                  <li><input type="checkbox" checked onchange="checkBoxRegion(this)" value="Africa"> Africa</li>
-                  <li><input type="checkbox" checked onchange="checkBoxRegion(this)" value="Asia"> Asia</li>
-                  <li><input type="checkbox" checked onchange="checkBoxRegion(this)" value="America"> America</li>
-                  <li><input type="checkbox" checked onchange="checkBoxRegion(this)" value="Europe"> Europe</li>
+                  <li><input id="aficaCB" type="checkbox" checked onchange="checkBoxRegion(this)" value="Africa"> Africa</li>
+                  <li><input id="asiaCB" type="checkbox" checked onchange="checkBoxRegion(this)" value="Asia"> Asia</li>
+                  <li><input id="americaCB" type="checkbox" checked onchange="checkBoxRegion(this)" value="America"> America</li>
+                  <li><input id="europeCB" type="checkbox" checked onchange="checkBoxRegion(this)" value="Europe"> Europe</li>
               </ul>
             </div>
 
@@ -79,7 +79,10 @@
         
         <div style="float:right; margin-left:100px; width:100%; height: 100%;">
           <svg id="mapViz" ></svg>
+          <div id='tooltipMap' style='position:absolute;background-color:white;padding:5px;
+          opacity: 0.9; border-radius: 2px;'></div> 
         </div>
+        
 
 
         </section>
@@ -100,7 +103,8 @@
             <!-- <div style="background: red;width: 100%; height: 100%;"></div> -->
 
             <svg id="lineViz" ></svg>
-            <div id='tooltip' style='position:absolute;background-color:white;padding:5px'></div>      
+            <div id='tooltip' style='position:absolute;background-color:white;padding:5px;
+                opacity: 0.9; border-radius: 2px;'></div>      
             </div>
  
 
