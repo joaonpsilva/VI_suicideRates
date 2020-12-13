@@ -82,6 +82,7 @@
             }
 
             dados = dados.reduce((a, {year, suicides_no, gdp_per_capita}) => {
+                console.log(a)
                 a[year] = a[year] || {year, suicides_no: 0, gdp_per_capita};
                 a[year].suicides_no += parseInt(suicides_no);
                 return a;
@@ -205,8 +206,6 @@
             function drawTooltip() {
                 const year = Math.floor((x_scale.invert(d3.mouse(tipBox.node())[0] + xmargin)));
                 
-                console.log(d3.mouse(tipBox.node())[0])
-                console.log(year)
                 tooltipLine.attr('stroke', 'black')
                     .attr('x1', x_scale(year))
                     .attr('x2', x_scale(year))
