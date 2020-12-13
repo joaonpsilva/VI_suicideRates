@@ -75,7 +75,8 @@ function updateData(){
 function ready(error, topo) {
 
   // Draw the map
-  console.log(data);
+  //console.log(data);
+
   svg.append("g")
     .selectAll("path")
     .data(topo.features)
@@ -89,14 +90,18 @@ function ready(error, topo) {
       .attr("fill", function (d) {
         //console.log(d.properties.name);
         //console.log(d.properties.name in data);
+        return getColor(d);
 
-        if (d.properties.name in data){
-          var c = data[d.properties.name];
-          var per100k = 100000 * c.ctotal / c.cpopulation;
-          return colorScale(per100k);
-        }
-      });
-
+      })
+      // On click event function for map
+      .on('mouseover', function(d){
+          console.log(d)
+          d3.select(this).attr("fill","Turquoise")
+      })
+      .on('mouseout', function(d){
+        console.log(d)
+        d3.select(this).attr("fill",getColor(d))
+    })
 
       var pieData1 = {'male': 0, 'female':0};
       var pieData2 = {'5-14':0, '15-24':0,'25-34':0,'35-54':0,'55-74':0, '75+':0};
@@ -115,4 +120,17 @@ function ready(error, topo) {
       updatePie(svgPie1, pieData1);
       updatePie(svgPie2, pieData2);
       updateLine()
+}
+
+function getColor(d){
+  if (d.properties.name in data){
+    var c = data[d.properties.name];
+    var per100k = 100000 * c.ctotal / c.cpopulation;
+
+    d.properties.suicides = c.total
+    d.properties.suicidesPerCapita = per100k
+    d.properties.population = c.population
+    return colorScale(per100k);
+  }
+  return "black"
 }
