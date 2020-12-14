@@ -170,8 +170,9 @@ function drawTooltip() {
     });
     tooltip.append('div');
     tooltip.append('text').text("Suicides: ").style('color','orangered').style("font-size", '20px');
-    tooltip.append('text').text(suicides).style('color','black').style("font-weight", 'normal').style("font-size", '20px');
-
+    if (per100kVis)     tooltip.append('text').text(suicides.toFixed(2)).style('color','black').style("font-weight", 'normal').style("font-size", '20px');
+    else                tooltip.append('text').text(suicides).style('color','black').style("font-weight", 'normal').style("font-size", '20px');
+    
     tooltip.append('div')
     tooltip.append('text').text("GDP per capita: ").style('color','green').style("font-size", '20px');
     tooltip.append('text').text(gdp.toFixed(2)).style('color','black').style("font-weight", 'normal').style("font-size", '20px');

@@ -80,8 +80,6 @@ function updateData(){
           c.setGdpPerCap(d.gdp_per_capita);
           data[d.country] = c;
 
-
-          //data.set(d.country, p);
       })
     .await(ready);
     }
@@ -105,7 +103,7 @@ function ready(error, topo) {
         return getColor(d);
       })
       // On click event function for map
-      .on('mouseover', function(d){
+      .on('mouseover', function(d){               //HOOVER
           //console.log(d)
           d3.select(this).attr("fill","Turquoise")
 
@@ -141,7 +139,7 @@ function ready(error, topo) {
         if (tooltipMap) tooltipMap.style('display', 'none');
 
       })
-      .on("click", function(d){
+      .on("click", function(d){               //CLICK
         filterCountries = [d.properties.name]
         document.getElementById("aficaCB").checked = false;
         document.getElementById("asiaCB").checked = false;
@@ -165,7 +163,6 @@ function ready(error, topo) {
       });
 
 
-      console.log(pieData1)
       for (var key in data){  //fill dicts
 
         filterAges.forEach(function(e){
@@ -186,18 +183,6 @@ function ready(error, topo) {
           pieData2[age] /= totalPopPAge[age]
         }
       }
-
-      // for (var key in data){
-      //     pieData1['male'] += data[key].perSex['male'];
-      //     pieData1['female'] += data[key].perSex['female'];
-
-      //     pieData2['24-'] += data[key].perAge['24- years'];
-      //     pieData2['25-34'] += data[key].perAge['25-34 years'];
-      //     pieData2['35-54'] += data[key].perAge['35-54 years'];
-      //     pieData2['55-74'] += data[key].perAge['55-74 years'];
-      //     pieData2['75+'] += data[key].perAge['75+ years'];
-      // }
-      console.log(pieData1)
       updatePie(svgPie1, pieData1);
       updatePie(svgPie2, pieData2);
       updateLine()
