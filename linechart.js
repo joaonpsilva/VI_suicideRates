@@ -26,7 +26,10 @@ function updateLine(){
     vizdata=[];
     for(var key in dataLine){
         var value = dataLine[key];
-        vizdata.push({"year": key, "suicides": value["suicides"], "gdpPerCap":value["gdp"]/value["population"] })
+        if (per100kVis) {vizdata.push({"year": key, "suicides": 100000*value["suicides"]/ value["population"], "gdpPerCap":value["gdp"]/value["population"] })}
+        
+        else {vizdata.push({"year": key, "suicides": value["suicides"], "gdpPerCap":value["gdp"]/value["population"] })}
+            
     }
 
 

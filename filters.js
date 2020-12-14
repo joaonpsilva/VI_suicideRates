@@ -1,6 +1,6 @@
 //Filter values
 
-
+var per100kVis = true
 var yearSelected = 1999
 var filterSex = ['male', 'female'];
 var filterAges = ['24- years','25-34 years','35-54 years','55-74 years', '75+ years'];
@@ -33,6 +33,14 @@ var region = {
 
 }
 
+function checkBox100k(box){
+    if (box.checked) {
+        per100kVis = true
+    } else {
+        per100kVis = false
+    }
+    updateData()
+}
 
 
 function checkBoxAge(box){

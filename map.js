@@ -18,9 +18,7 @@ var projection = d3.geoMercator()
 
 // Data and color scale
 
-var colorScale = d3.scaleThreshold()
-  .domain([10, 25, 50, 75, 100])
-  .range(d3.schemeReds[5]);
+var colorScale;
 
 // Load external data and boot
 updateData();
@@ -28,6 +26,15 @@ updateData();
 function updateData(){
   data = {}
   dataLine = {}
+  
+  if (per100kVis)
+    colorScale = d3.scaleThreshold()
+    .domain([10, 25, 50, 75, 100])
+    .range(d3.schemeReds[5]);
+  else
+    colorScale = d3.scaleThreshold()
+    .domain([100, 1000, 10000, 25000, 50000])
+    .range(d3.schemeReds[5]);
 
   d3.queue()
     .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
@@ -66,6 +73,9 @@ function updateData(){
           c.addPerSex(d.sex, parseFloat(d.suicides_no));
           c.addSuicideno(parseFloat(d.suicides_no));
           c.addPopulation(parseFloat(d.population));
+          c.addPopulationPerSex(d.sex, parseFloat(d.population));
+          c.addPopulationPerAge(d.age, parseFloat(d.population));
+
           c.setGdp(d.gdp_for_year);
           c.setGdpPerCap(d.gdp_per_capita);
           data[d.country] = c;
@@ -140,20 +150,54 @@ function ready(error, topo) {
 
         updateData()
       })
+      var totalPopPSex = {};
+      var totalPopPAge = {};
+      var pieData1 = {};
+      var pieData2 = {};
 
-      var pieData1 = {'male': 0, 'female':0};
-      var pieData2 = {'24-':0,'25-34':0,'35-54':0,'55-74':0, '75+':0};
-      
-      for (var key in data){
-          pieData1['male'] += data[key].perSex['male'];
-          pieData1['female'] += data[key].perSex['female'];
+      filterAges.forEach(function(e){ //create dicts
+        totalPopPAge[e.slice(0,-6)] = 0
+        pieData2[e.slice(0,-6)] = 0
+      });
+      filterSex.forEach(function(e){ //create dicts
+        totalPopPSex[e] = 0
+        pieData1[e] = 0
+      });
 
-          pieData2['24-'] += data[key].perAge['24- years'];
-          pieData2['25-34'] += data[key].perAge['25-34 years'];
-          pieData2['35-54'] += data[key].perAge['35-54 years'];
-          pieData2['55-74'] += data[key].perAge['55-74 years'];
-          pieData2['75+'] += data[key].perAge['75+ years'];
+
+      console.log(pieData1)
+      for (var key in data){  //fill dicts
+
+        filterAges.forEach(function(e){
+          totalPopPAge[e.slice(0,-6)] += data[key].popPerAge[e]
+          pieData2[e.slice(0,-6)]+= data[key].perAge[e]
+        });
+        filterSex.forEach(function(e){
+          totalPopPSex[e] += data[key].popPerSex[e]
+          pieData1[e]+= data[key].perSex[e]
+        });
       }
+
+      if (per100kVis){
+        for (sex in pieData1){  //merge dicts
+          pieData1[sex] /= totalPopPSex[sex]
+        }
+        for (age in pieData2){
+          pieData2[age] /= totalPopPAge[age]
+        }
+      }
+
+      // for (var key in data){
+      //     pieData1['male'] += data[key].perSex['male'];
+      //     pieData1['female'] += data[key].perSex['female'];
+
+      //     pieData2['24-'] += data[key].perAge['24- years'];
+      //     pieData2['25-34'] += data[key].perAge['25-34 years'];
+      //     pieData2['35-54'] += data[key].perAge['35-54 years'];
+      //     pieData2['55-74'] += data[key].perAge['55-74 years'];
+      //     pieData2['75+'] += data[key].perAge['75+ years'];
+      // }
+      console.log(pieData1)
       updatePie(svgPie1, pieData1);
       updatePie(svgPie2, pieData2);
       updateLine()
@@ -169,7 +213,12 @@ function getColor(d){
     d.properties.population = c.population
     d.properties.gdp = c.cgdp
     d.properties.gdpPerCap = c.cgdpPerCap
-    return colorScale(per100k);
+
+    if(per100kVis)
+      return colorScale(per100k);
+    else
+      return colorScale(c.total)
   }
   return "black"
 }
+

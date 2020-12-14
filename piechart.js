@@ -30,7 +30,7 @@ var arcGenerator = d3.arc()
 // Create dummy data
 function updatePie(svgPie, pieData){
     for (var key in pieData){
-      if (pieData[key] == 0){
+      if (pieData[key] == 0 || isNaN(pieData[key])){
         delete pieData[key];
       }
     }
@@ -38,7 +38,7 @@ function updatePie(svgPie, pieData){
 
     var pie = d3.pie()
     .value(function(d) {return d.value; })
-    .sort(function(a, b) { console.log(a) ; return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
+    .sort(function(a, b) { return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
     var data_ready = pie(d3.entries(pieData))
 
     // map to data

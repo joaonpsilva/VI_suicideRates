@@ -5,6 +5,8 @@ class Country {
       this.per100k = 0;
       this.perSex = {'male': 0, "female":0};
       this.perAge = {'24- years':0,'25-34 years':0,'35-54 years':0,'55-74 years':0, '75+ years':0};
+      this.popPerSex= {'male': 0, "female":0};
+      this.popPerAge = {'24- years':0,'25-34 years':0,'35-54 years':0,'55-74 years':0, '75+ years':0};
       this.population = 0;
       this.gdp = 0
       this.gdpPerCap = 0
@@ -35,12 +37,20 @@ class Country {
       this.perSex[sex] += n;
     }
 
+    addPopulationPerSex(sex, n){
+      this.popPerSex[sex] += n;
+    }
+    
+
     addSuicideno(n){
       this.total += n;
     }
   
     addPerAge(age, n){
       this.perAge[age] += n;
+    }
+    addPopulationPerAge(age, n){
+      this.popPerAge[age] += n;
     }
 
     setPer100k(val){
