@@ -33,12 +33,14 @@ class Country {
   
     addPerSex(sex, n){
       this.perSex[sex] += n;
+    }
+
+    addSuicideno(n){
       this.total += n;
     }
   
     addPerAge(age, n){
       this.perAge[age] += n;
-      this.total += n;
     }
 
     setPer100k(val){

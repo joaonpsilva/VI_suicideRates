@@ -62,6 +62,7 @@ function updateData(){
           }
           c.addPerAge(d.age, parseFloat(d.suicides_no));
           c.addPerSex(d.sex, parseFloat(d.suicides_no));
+          c.addSuicideno(parseFloat(d.suicides_no));
           c.addPopulation(parseFloat(d.population));
           c.setGdp(d.gdp_for_year);
           c.setGdpPerCap(d.gdp_per_capita);

@@ -86,10 +86,15 @@ var output = document.getElementById("yearValue");
 //output.innerHTML = slider.value; // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)
-slider.oninput = function() {
+slider.onchange = function() {
     output.innerHTML = "Year = " + this.value;
     yearSelected = this.value;
+    
     updateData()
+}
+
+slider.oninput = function() {
+    output.innerHTML = "Year = " + this.value;
 }
 
 ///////////////////////////////////////////////////////////////////////////
