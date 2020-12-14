@@ -8,6 +8,7 @@ var svg = d3.select("#mapViz")
   .attr('height', height*0.9)
 
 var tooltipMap = d3.select('#tooltipMap');
+var label = d3.select('#label')
 
 // Map and projection
 var path = d3.geoPath();
@@ -23,66 +24,89 @@ var colorScale;
 // Load external data and boot
 updateData();
 
-function updateData(){
-  data = {}
-  dataLine = {}
-  
-  if (per100kVis)
-    colorScale = d3.scaleThreshold()
-    .domain([10, 25, 50, 75, 100])
-    .range(d3.schemeReds[5]);
-  else
-    colorScale = d3.scaleThreshold()
-    .domain([100, 1000, 10000, 25000, 50000])
-    .range(d3.schemeReds[5]);
+function updateData() {
+    data = {}
+    dataLine = {}
 
-  d3.queue()
-    .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-    .defer(d3.csv, "master.csv",
-      function(d){
-          if (!filterCountries.includes(d.country)) return;
-          //------------LINECHART
-          if (!(d.country=='China' &&  filterCountries.length != 1)){
-            if (!(d.year in dataLine) ){
-              dataLine[d.year] = {"suicides":0,"population":0, "gdp":0, "countries":[]};
-            }
-            dataLine[d.year]["population"] += parseInt(d.population);
-            if (!(dataLine[d.year]["countries"].includes(d.country))){
-              dataLine[d.year]["gdp"] += parseInt(d.gdp_for_year);
-              dataLine[d.year]["countries"].push(d.country);
-            }
-          }
-          //------------------------------
-          
-          if (!filterSex.includes(d.sex))return;
-          
-          if ((!filterAges.includes(d.age) && d.age!='') || filterAges.length==0)return;
-          
-          if (!(d.country=='China' &&  filterCountries.length != 1))
-            dataLine[d.year]["suicides"]+=parseInt(d.suicides_no);
+    if (per100kVis)
+        colorScale = d3.scaleThreshold()
+            .domain([10, 25, 50, 75, 100])
+            .range(d3.schemeReds[5]);
+    else
+        colorScale = d3.scaleThreshold()
+            .domain([100, 1000, 10000, 25000, 50000])
+            .range(d3.schemeReds[5]);
 
-          if (d.year != yearSelected)return;
+    d3.queue()
+        .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+        .defer(d3.csv, "master.csv",
+            function (d) {
+                if (!filterCountries.includes(d.country)) return;
+                //------------LINECHART
+                if (!(d.country == 'China' && filterCountries.length != 1)) {
+                    if (!(d.year in dataLine)) {
+                        dataLine[d.year] = {"suicides": 0, "population": 0, "gdp": 0, "countries": []};
+                    }
+                    dataLine[d.year]["population"] += parseInt(d.population);
+                    if (!(dataLine[d.year]["countries"].includes(d.country))) {
+                        dataLine[d.year]["gdp"] += parseInt(d.gdp_for_year);
+                        dataLine[d.year]["countries"].push(d.country);
+                    }
+                }
+                //------------------------------
 
-          if (d.country in data){
-            var c = data[d.country];
-          }
-          else{
-            var c = new Country(d.country);
-          }
-          c.addPerAge(d.age, parseFloat(d.suicides_no));
-          c.addPerSex(d.sex, parseFloat(d.suicides_no));
-          c.addSuicideno(parseFloat(d.suicides_no));
-          c.addPopulation(parseFloat(d.population));
-          c.addPopulationPerSex(d.sex, parseFloat(d.population));
-          c.addPopulationPerAge(d.age, parseFloat(d.population));
+                if (!filterSex.includes(d.sex)) return;
 
-          c.setGdp(d.gdp_for_year);
-          c.setGdpPerCap(d.gdp_per_capita);
-          data[d.country] = c;
+                if ((!filterAges.includes(d.age) && d.age != '') || filterAges.length == 0) return;
 
-      })
-    .await(ready);
+                if (!(d.country == 'China' && filterCountries.length != 1))
+                    dataLine[d.year]["suicides"] += parseInt(d.suicides_no);
+
+                if (d.year != yearSelected) return;
+
+                if (d.country in data) {
+                    var c = data[d.country];
+                } else {
+                    var c = new Country(d.country);
+                }
+                c.addPerAge(d.age, parseFloat(d.suicides_no));
+                c.addPerSex(d.sex, parseFloat(d.suicides_no));
+                c.addSuicideno(parseFloat(d.suicides_no));
+                c.addPopulation(parseFloat(d.population));
+                c.addPopulationPerSex(d.sex, parseFloat(d.population));
+                c.addPopulationPerAge(d.age, parseFloat(d.population));
+
+                c.setGdp(d.gdp_for_year);
+                c.setGdpPerCap(d.gdp_per_capita);
+                data[d.country] = c;
+
+
+                //data.set(d.country, p);
+            })
+        .await(ready);
+
+    label.html("Legenda")
+        .style('color', 'black')
+        .style("font-size", '30px')
+        .style('display', 'block')
+        .style("font-weight", 'bolder')
+
+
+    var values;
+    if (per100kVis)
+        values = [10, 25, 50, 75, 100]
+    else
+        values = [100, 1000, 10000, 25000, 50000]
+
+
+    for (var i = 0; i < values.length; i++) {
+        label.append("div").style("height", "30px").style("width", "30px").style("background-color" ,colorScale(values[i]) )
+            .append('text').text(values[i]).style("font-size", '18px').style("font-weight", 'normal').style("margin-left", "30px").style("margin-top", "-10px");
+        //label.append('text').text(values[i]).style("font-size", '18px').style("font-weight", 'normal').style("color", colorScale(values[i]));
     }
+}
+
+
 
 function ready(error, topo) {
 
@@ -103,7 +127,7 @@ function ready(error, topo) {
         return getColor(d);
       })
       // On click event function for map
-      .on('mouseover', function(d){               //HOOVER
+      .on('mouseover', function(d){
           //console.log(d)
           d3.select(this).attr("fill","Turquoise")
 
@@ -139,7 +163,7 @@ function ready(error, topo) {
         if (tooltipMap) tooltipMap.style('display', 'none');
 
       })
-      .on("click", function(d){               //CLICK
+      .on("click", function(d){
         filterCountries = [d.properties.name]
         document.getElementById("aficaCB").checked = false;
         document.getElementById("asiaCB").checked = false;
@@ -163,6 +187,7 @@ function ready(error, topo) {
       });
 
 
+      console.log(pieData1)
       for (var key in data){  //fill dicts
 
         filterAges.forEach(function(e){
@@ -183,6 +208,18 @@ function ready(error, topo) {
           pieData2[age] /= totalPopPAge[age]
         }
       }
+
+      // for (var key in data){
+      //     pieData1['male'] += data[key].perSex['male'];
+      //     pieData1['female'] += data[key].perSex['female'];
+
+      //     pieData2['24-'] += data[key].perAge['24- years'];
+      //     pieData2['25-34'] += data[key].perAge['25-34 years'];
+      //     pieData2['35-54'] += data[key].perAge['35-54 years'];
+      //     pieData2['55-74'] += data[key].perAge['55-74 years'];
+      //     pieData2['75+'] += data[key].perAge['75+ years'];
+      // }
+      console.log(pieData1)
       updatePie(svgPie1, pieData1);
       updatePie(svgPie2, pieData2);
       updateLine()
