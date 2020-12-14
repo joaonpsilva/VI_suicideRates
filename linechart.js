@@ -32,6 +32,7 @@ function updateLine(){
 
     // X Scale
     let x_extent = d3.extent(vizdata, function (d) { return d.year });
+    console.log(x_extent)
     x_scale = d3.scaleLinear()
         .range([xmargin, width - xmargin])
         .domain(x_extent);
@@ -123,7 +124,7 @@ function updateLine(){
 
 
     tipBox = linesvg.append('rect')
-    .attr('width', width-2*xmargin)
+    .attr('width', width-2*xmargin+10)
     .attr('height', height)
     .attr('opacity', 0)
     .attr("transform", "translate(" + xmargin +", 0)")
@@ -139,7 +140,9 @@ function removeTooltip() {
 
 function drawTooltip() {
     const year = Math.floor((x_scale.invert(d3.mouse(tipBox.node())[0] + xmargin)));
-    
+
+    if (!(year in dataLine)) return;
+
     tooltipLine.attr('stroke', 'black')
         .attr('x1', x_scale(year))
         .attr('x2', x_scale(year))

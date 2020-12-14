@@ -3,7 +3,7 @@
 
 var yearSelected = 1999
 var filterSex = ['male', 'female'];
-var filterAges = ['5-14 years', '15-24 years','25-34 years','35-54 years','55-74 years', '75+ years'];
+var filterAges = ['24- years','25-34 years','35-54 years','55-74 years', '75+ years'];
 var filterCountries = ['Albania' , 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan' , 'Belarus',
                         'Belgium' , 'Belize', 'Brazil' , 'Bulgaria' ,'Bosnia and Herzegovina' ,'Canada' ,'Chile' , 'Colombia',
                         'Costa Rica' , 'Croatia', 'Cuba' , 'Cyprus', 'Czech Republic' , 'Denmark' , 'Dominican Republic' ,
@@ -15,13 +15,13 @@ var filterCountries = ['Albania' , 'Argentina', 'Armenia', 'Australia', 'Austria
                         'Republic of Serbia' , 'Romania', 'Russia' , 'Slovakia', 'Slovenia', 'South Africa', 'South Korea',
                         'Spain' , 'Sri Lanka', 'Suriname' , 'Sweden' , 'Switzerland', 'Thailand' , 'The Bahamas' ,
                         'Trinidad and Tobago', 'Turkey' , 'Turkmenistan', 'USA' , 'Ukraine' , 'United Arab Emirates',
-                        'Uruguay', 'Uzbekistan']
+                        'Uruguay', 'Uzbekistan','China']
 
 var region = {
     Africa: ['South Africa'],
     Asia:   ['Armenia', 'Australia','Azerbaijan', 'Fiji','Georgia','Israel','Japan','Kazakhstan','Kuwait','Kyrgyzstan','Mongolia',
             'New Zealand','Oman','Philippines','Qatar','South Korea','Sri Lanka','Thailand','Turkey','Turkmenistan','United Arab Emirates',
-            'Uzbekistan'],
+            'Uzbekistan','China'],
     America:    ['Argentina', 'Belize' , 'Brazil' , 'Canada' , 'Chile' , 'Colombia' , 'Costa Rica' , 'Cuba' , 'Dominican Republic',
                 'Ecuador','El Salvador', 'Guatemala', 'Guyana','Jamaica','Mexico','Nicaragua','Panama','Paraguay','Puerto Rico',
                 'Suriname','The Bahamas','Trinidad and Tobago','USA','Uruguay'],
@@ -36,7 +36,6 @@ var region = {
 
 
 function checkBoxAge(box){
-    console.log(box)
 
     if (box.checked) {
         // Add element
@@ -100,7 +99,6 @@ slider.oninput = function() {
 ///////////////////////////////////////////////////////////////////////////
 // Togle display checkboxes
 function showAge(img) {
-    console.log(img)
     var x = document.getElementById("ageCheckboxes");
     if (x.style.display === "none") {
         x.style.display = "block";

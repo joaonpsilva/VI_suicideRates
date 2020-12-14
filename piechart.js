@@ -28,8 +28,12 @@ var arcGenerator = d3.arc()
   .innerRadius(0)
   .outerRadius(radius)
 // Create dummy data
-//var data = {a: 9, b: 20, c:30, d:8, e:12}
 function updatePie(svgPie, pieData){
+    for (var key in pieData){
+      if (pieData[key] == 0){
+        delete pieData[key];
+      }
+    }
 
 
     var pie = d3.pie()
@@ -45,8 +49,6 @@ function updatePie(svgPie, pieData){
         .enter()
         .append('path')
         .merge(u)
-        .transition()
-        .duration(2000)
         .attr('d', arcGenerator)
         .attr('fill', function(d){ return(color(d.data.key)) })
         .attr("stroke", "white")
@@ -64,16 +66,9 @@ function updatePie(svgPie, pieData){
         .append('text')
         .merge(u)
         .transition()
-        .duration(1000)
+        .duration(2000)
         .text(function(d) {
-            console.log(d.data.key)
-            if (filterAges.includes(d.data.key + " years")) {
-                return d.data.key
-            }
-            if (filterSex.includes(d.data.key)){
-                return d.data.key
-            }
-
+          return d.data.key
         })
         .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
         .style("text-anchor", "middle")
@@ -83,53 +78,3 @@ function updatePie(svgPie, pieData){
         .remove()
 
 }
-
-
-/*
-  // A function that create / update the plot for a given variable:
-function update(chart) {
-
-    // Compute the position of each group on the pie:
-    if (chart == 0){    //SEX
-        
-        var pieData = {'male': 0, 'female':0};
-        data.array.forEach(element => {
-            pieData['male'] += element.perSex['male'];
-            pieData['male'] += element.perSex['male'];
-        });
-    }
-    var pie = d3.pie()
-      .value(function(d) {return d.value; })
-      .sort(function(a, b) { console.log(a) ; return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
-    var data_ready = pie(d3.entries(data))
-  
-    // map to data
-    var u = svg.selectAll("path")
-      .data(data_ready)
-  
-    // Build the pie          <script  src="piechart.js"></script>
-  
-    u
-      .enter()
-      .append('path')
-      .merge(u)
-      .transition()
-      .duration(1000)
-      .attr('d', d3.arc()
-        .innerRadius(0)
-        .outerRadius(radius)
-      )
-      .attr('fill', function(d){ return(color(d.data.key)) })
-      .attr("stroke", "white")
-      .style("stroke-width", "2px")
-      .style("opacity", 1)
-  
-    // remove the group that is not present anymore
-    u
-      .exit()
-      .remove()
-  
-  }
-  
-  // Initialize the plot with the first dataset
-  update(data1)*/

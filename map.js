@@ -34,23 +34,25 @@ function updateData(){
     .defer(d3.csv, "master.csv",
       function(d){
           if (!filterCountries.includes(d.country)) return;
-          
           //------------LINECHART
-          if (!(d.year in dataLine) ){
-            dataLine[d.year] = {"suicides":0,"population":0, "gdp":0, "countries":[]};
-          }
-          dataLine[d.year]["population"] += parseInt(d.population);
-          if (!(dataLine[d.year]["countries"].includes(d.country))){
-            dataLine[d.year]["gdp"] += parseInt(d.gdp_for_year);
-            dataLine[d.year]["countries"].push(d.country);
+          if (!(d.country=='China' &&  filterCountries.length != 1)){
+            if (!(d.year in dataLine) ){
+              dataLine[d.year] = {"suicides":0,"population":0, "gdp":0, "countries":[]};
+            }
+            dataLine[d.year]["population"] += parseInt(d.population);
+            if (!(dataLine[d.year]["countries"].includes(d.country))){
+              dataLine[d.year]["gdp"] += parseInt(d.gdp_for_year);
+              dataLine[d.year]["countries"].push(d.country);
+            }
           }
           //------------------------------
           
           if (!filterSex.includes(d.sex))return;
           
-          if (!filterAges.includes(d.age))return;
+          if ((!filterAges.includes(d.age) && d.age!='') || filterAges.length==0)return;
           
-          dataLine[d.year]["suicides"]+=parseInt(d.suicides_no);
+          if (!(d.country=='China' &&  filterCountries.length != 1))
+            dataLine[d.year]["suicides"]+=parseInt(d.suicides_no);
 
           if (d.year != yearSelected)return;
 
@@ -77,7 +79,7 @@ function updateData(){
 function ready(error, topo) {
 
   // Draw the map
-  //console.log(data);
+  console.log(data);
 
   svg.append("g")
     .selectAll("path")
@@ -94,7 +96,7 @@ function ready(error, topo) {
       })
       // On click event function for map
       .on('mouseover', function(d){
-          console.log(d)
+          //console.log(d)
           d3.select(this).attr("fill","Turquoise")
 
           
@@ -106,25 +108,25 @@ function ready(error, topo) {
           .style('left', (d3.event.pageX + 20) + "px")
           .style('top', (d3.event.pageY) + "px");
 
-          tooltipMap.append("div");
-          tooltipMap.append('text').text("Population: ").style("font-size", '18px');
-          tooltipMap.append('text').text(d.properties.population).style("font-size", '18px').style("font-weight", 'normal');
+          if (d.properties.name in data){
+            tooltipMap.append("div");
+            tooltipMap.append('text').text("Population: ").style("font-size", '18px');
+            tooltipMap.append('text').text(d.properties.population).style("font-size", '18px').style("font-weight", 'normal');
 
-          tooltipMap.append("div");
-          tooltipMap.append('text').text("Suicides: ").style("font-size", '18px');
-          tooltipMap.append('text').text(d.properties.suicides).style("font-size", '18px').style("font-weight", 'normal');
+            tooltipMap.append("div");
+            tooltipMap.append('text').text("Suicides: ").style("font-size", '18px');
+            tooltipMap.append('text').text(d.properties.suicides).style("font-size", '18px').style("font-weight", 'normal');
 
-          tooltipMap.append("div");
-          tooltipMap.append('text').text("Suicides p/ 100k: ").style("font-size", '18px');
-          tooltipMap.append('text').text(d.properties.suicidesPerCapita.toFixed(2)).style("font-size", '18px').style("font-weight", 'normal');
+            tooltipMap.append("div");
+            tooltipMap.append('text').text("Suicides p/ 100k: ").style("font-size", '18px');
+            tooltipMap.append('text').text(d.properties.suicidesPerCapita.toFixed(2)).style("font-size", '18px').style("font-weight", 'normal');
 
-          tooltipMap.append("div");
-          tooltipMap.append('text').text("Gdp p/ Capita: ").style("font-size", '18px');
-          tooltipMap.append('text').text(d.properties.gdpPerCap).style("font-size", '18px').style("font-weight", 'normal');
-
+            tooltipMap.append("div");
+            tooltipMap.append('text').text("Gdp p/ Capita: ").style("font-size", '18px');
+            tooltipMap.append('text').text(d.properties.gdpPerCap).style("font-size", '18px').style("font-weight", 'normal');
+          }
       })
       .on('mouseout', function(d){
-        console.log(d)
         d3.select(this).attr("fill",getColor(d))
         if (tooltipMap) tooltipMap.style('display', 'none');
 
@@ -140,14 +142,13 @@ function ready(error, topo) {
       })
 
       var pieData1 = {'male': 0, 'female':0};
-      var pieData2 = {'5-14':0, '15-24':0,'25-34':0,'35-54':0,'55-74':0, '75+':0};
+      var pieData2 = {'24-':0,'25-34':0,'35-54':0,'55-74':0, '75+':0};
       
       for (var key in data){
           pieData1['male'] += data[key].perSex['male'];
           pieData1['female'] += data[key].perSex['female'];
 
-          pieData2['5-14'] += data[key].perAge['5-14 years'];
-          pieData2['15-24'] += data[key].perAge['15-24 years'];
+          pieData2['24-'] += data[key].perAge['24- years'];
           pieData2['25-34'] += data[key].perAge['25-34 years'];
           pieData2['35-54'] += data[key].perAge['35-54 years'];
           pieData2['55-74'] += data[key].perAge['55-74 years'];
