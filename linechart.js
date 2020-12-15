@@ -35,7 +35,6 @@ function updateLine(){
 
     // X Scale
     let x_extent = d3.extent(vizdata, function (d) { return d.year });
-    console.log(x_extent)
     x_scale = d3.scaleLinear()
         .range([xmargin, width - xmargin])
         .domain(x_extent);
@@ -74,8 +73,6 @@ function updateLine(){
         .attr("transform", "translate(" + (width-xmargin) +  ", 0)")
         .call(y_axis2);
 
-
-    console.log(vizdata)
     // Line
     let linesuicides = d3.line()
         .x(function (d) { return x_scale(d.year) })

@@ -1,7 +1,7 @@
 //Filter values
 
 var per100kVis = true
-var yearSelected = 1999
+var yearSelected = 2000
 var filterSex = ['male', 'female'];
 var filterAges = ['24- years','25-34 years','35-54 years','55-74 years', '75+ years'];
 var filterCountries = ['Albania' , 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan' , 'Belarus',
