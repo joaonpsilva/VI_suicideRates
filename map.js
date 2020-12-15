@@ -17,12 +17,26 @@ var projection = d3.geoMercator()
   .center([0,20])
   .translate([width / 2, height / 2]);
 
+  //zoom
+const zoom = d3.zoom()
+.scaleExtent([0.8, 8])
+.on('zoom', zoomed);
+
+svg.call(zoom);
+
 // Data and color scale
 
 var colorScale;
 
 // Load external data and boot
 updateData();
+
+
+function zoomed() {
+  svg
+    .selectAll('path') // To prevent stroke width from scaling
+    .attr('transform', d3.event.transform);
+}
 
 function updateData() {
     data = {}
