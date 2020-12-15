@@ -1,5 +1,5 @@
 // set the dimensions and margins of the graph
-var width = document.getElementById('mapViz').parentElement.clientWidth
+var width = window.innerWidth
     height = document.getElementById('mapViz').parentElement.clientHeight
     margin = 40
 
@@ -12,13 +12,24 @@ var svgPie1 = d3.select("#pieChart1")
     .attr("width", width/2)
     .attr("height", height)
   .append("g")
-    .attr("transform", "translate(" + (radius + width/5)  + "," + radius + ")");
+    .attr("transform", "translate(" + (width/4)  + "," + radius + ")");
 
 var svgPie2 = d3.select("#pieChart2")
     .attr("width", width/2)
     .attr("height", height)
   .append("g")
-    .attr("transform", "translate(" + (radius + width/5) + "," + radius + ")");
+    .attr("transform", "translate(" + (width/4 - 70) + "," + radius + ")");
+
+//LABELS
+var lab = document.getElementById("sexLabel")
+lab.innerHTML="Sex:"
+lab.style.left= width/4 - radius -50 + "px"
+lab.style.top=height/4 + "px"
+
+var lab2 = document.getElementById("ageLabel")
+lab2.innerHTML="Age:"
+lab2.style.left= width/4 - radius -50 - 70 + "px"
+lab2.style.top=height/4 + "px"
 
 // set the color scale
 var color = d3.scaleOrdinal()
