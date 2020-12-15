@@ -31,11 +31,11 @@ function updateData() {
     if (per100kVis)
         colorScale = d3.scaleThreshold()
             .domain([10, 25, 50, 75, 100])
-            .range(d3.schemeReds[5]);
+            .range(d3.schemeReds[6]);
     else
         colorScale = d3.scaleThreshold()
             .domain([100, 1000, 10000, 25000, 50000])
-            .range(d3.schemeReds[5]);
+            .range(d3.schemeReds[6]);
 
     d3.queue()
         .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
