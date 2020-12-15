@@ -107,15 +107,33 @@ function updateData() {
 
 
     var values;
-    if (per100kVis)
-        values = [5, 15, 30, 60, 80]
-    else
-        values = [100, 1000, 10000, 25000, 50000]
+    var labelText;
+    var labelTitle;
+    if (per100kVis) {
+        values = [0,5, 15, 30, 60, 80];
+        labelText = ["5 or lower", "5 - 15" , "15 - 30", "30 - 60" , "60 - 80" , "80 or more"];
+        labelTitle = "Suicides cases per 100k population";
+    }
+    else {
+        values = [0,100, 1000, 10000, 25000, 50000]
+        labelText = ["100 or lower", "100 - 1000", "1000 - 10000", "10000 - 25000", "25000 - 50000", "50000 or more"];
+        labelTitle = "Total suicide cases";
+    }
 
+
+    label.html("")
+        .style('color', 'black')
+        .style("font-size", '20px')
+        .style('display', 'block').style("width" , "200px")
+        .style("font-weight", 'bolder').append("text").style('color', 'black')
+        .style("font-size", '20px')
+        .style('display', 'block')
+        .style("font-weight", 'bolder').text(labelTitle)
 
     for (var i = 0; i < values.length; i++) {
-        label.append("div").style("height", "30px").style("width", "30px").style("background-color" ,colorScale(values[i]) )
-            .append('text').text(values[i]).style("font-size", '18px').style("font-weight", 'normal').style("margin-left", "30px").style("margin-top", "-10px");
+        label.append("div").style("height", "30px").style("width", "30px").style("float","left").style("background-color" ,colorScale(values[i]) )
+        label.append("div").style("height", "30px").style("width", "300px")
+            .append('text').text(labelText[i]).style("font-size", '18px').style("font-weight", 'normal').style("margin-left", "10px").style("margin-top", "-10px");
         //label.append('text').text(values[i]).style("font-size", '18px').style("font-weight", 'normal').style("color", colorScale(values[i]));
     }
 }
