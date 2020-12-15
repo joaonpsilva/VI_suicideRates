@@ -2,10 +2,13 @@
 // The svg
 var width = document.getElementById('mapViz').parentElement.clientWidth;
 var height = document.getElementById('mapViz').parentElement.clientHeight;
+scaleoffSet = Math.floor((1000 - height)/100) * 25
+
+console.log(scaleoffSet)
 
 var svg = d3.select("#mapViz")
   .attr('width', width)
-  .attr('height', height*0.9)
+  .attr('height', height)
 
 var tooltipMap = d3.select('#tooltipMap');
 var label = d3.select('#label')
@@ -13,8 +16,8 @@ var label = d3.select('#label')
 // Map and projection
 var path = d3.geoPath();
 var projection = d3.geoMercator()
-  .scale(150)
-  .center([0,20])
+  .scale(170 - scaleoffSet)
+  .center([0,40])
   .translate([width / 2, height / 2]);
 
   //zoom
