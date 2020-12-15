@@ -30,7 +30,7 @@ function updateData() {
 
     if (per100kVis)
         colorScale = d3.scaleThreshold()
-            .domain([10, 25, 50, 75, 100])
+            .domain([5, 15, 30, 60, 80])
             .range(d3.schemeReds[6]);
     else
         colorScale = d3.scaleThreshold()
@@ -94,7 +94,7 @@ function updateData() {
 
     var values;
     if (per100kVis)
-        values = [10, 25, 50, 75, 100]
+        values = [5, 15, 30, 60, 80]
     else
         values = [100, 1000, 10000, 25000, 50000]
 
