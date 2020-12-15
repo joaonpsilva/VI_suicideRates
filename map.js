@@ -99,7 +99,7 @@ function updateData() {
             })
         .await(ready);
 
-    label.html("Legenda")
+    label.html("Suicides")
         .style('color', 'black')
         .style("font-size", '30px')
         .style('display', 'block')
