@@ -9,16 +9,16 @@ var radius = Math.min(width/2.5, height/2.5) / 2 - margin
 
 // append the svg object to the div called 'my_dataviz'
 var svgPie1 = d3.select("#pieChart1")
-    .attr("width", width)
+    .attr("width", width/2)
     .attr("height", height)
   .append("g")
-    .attr("transform", "translate(" + width/3.2  + "," + radius + ")");
+    .attr("transform", "translate(" + (radius + width/5)  + "," + radius + ")");
 
 var svgPie2 = d3.select("#pieChart2")
-    .attr("width", width)
+    .attr("width", width/2)
     .attr("height", height)
   .append("g")
-    .attr("transform", "translate(" + width/3.2 + "," + radius + ")");
+    .attr("transform", "translate(" + (radius + width/5) + "," + radius + ")");
 
 // set the color scale
 var color = d3.scaleOrdinal()
