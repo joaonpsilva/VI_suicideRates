@@ -112,7 +112,7 @@ function ready(error, topo) {
 
   // Draw the map
   console.log(data);
-
+  svg.selectAll("*").remove();
   svg.append("g")
     .selectAll("path")
     .data(topo.features)
