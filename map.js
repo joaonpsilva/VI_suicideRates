@@ -191,6 +191,11 @@ function ready(error, topo) {
             tooltipMap.append('text').text("Gdp p/ Capita: ").style("font-size", '18px');
             tooltipMap.append('text').text(d.properties.gdpPerCap).style("font-size", '18px').style("font-weight", 'normal');
           }
+          else{
+              tooltipMap.append("div");
+              tooltipMap.append('text').text("No data").style("font-size", '18px');
+
+          }
       })
       .on('mouseout', function(d){
         d3.select(this).attr("fill",getColor(d))
