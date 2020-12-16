@@ -2,10 +2,13 @@
 // The svg
 var width = document.getElementById('mapViz').parentElement.clientWidth;
 var height = document.getElementById('mapViz').parentElement.clientHeight;
+scaleoffSet = Math.floor((1000 - height)/100) * 25
+
+console.log(scaleoffSet)
 
 var svg = d3.select("#mapViz")
   .attr('width', width)
-  .attr('height', height*0.9)
+  .attr('height', height)
 
 var tooltipMap = d3.select('#tooltipMap');
 var label = d3.select('#label')
@@ -13,8 +16,8 @@ var label = d3.select('#label')
 // Map and projection
 var path = d3.geoPath();
 var projection = d3.geoMercator()
-  .scale(150)
-  .center([0,20])
+  .scale(170 - scaleoffSet)
+  .center([0,40])
   .translate([width / 2, height / 2]);
 
   //zoom
@@ -99,7 +102,7 @@ function updateData() {
             })
         .await(ready);
 
-    label.html("Legenda")
+    label.html("Suicides")
         .style('color', 'black')
         .style("font-size", '30px')
         .style('display', 'block')
@@ -195,6 +198,32 @@ function ready(error, topo) {
 
       })
       .on("click", function(d){                       //CLICK
+          console.log(d)
+
+          if (filterCountries.length === 1 && d.properties.name === filterCountries[0]){
+              filterCountries = ['Albania' , 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan' , 'Belarus',
+                  'Belgium' , 'Belize', 'Brazil' , 'Bulgaria' ,'Bosnia and Herzegovina' ,'Canada' ,'Chile' , 'Colombia',
+                  'Costa Rica' , 'Croatia', 'Cuba' , 'Cyprus', 'Czech Republic' , 'Denmark' , 'Dominican Republic' ,
+                  'Ecuador' , 'El Salvador' , 'England' , 'Estonia' , 'Fiji' , 'Finland' , 'France' , 'Georgia' ,
+                  'Germany' , 'Greece' , 'Guatemala','Guyana' , 'Hungary' , 'Iceland' ,'Ireland', 'Israel', 'Italy',
+                  'Jamaica', 'Japan' , 'Kazakhstan' ,'Kuwait' ,'Kyrgyzstan' ,'Latvia', 'Lithuania' , 'Luxembourg',
+                  'Mexico' , 'Mongolia' , 'Montenegro', 'Netherlands' , 'New Zealand' , 'Nicaragua' , 'Norway' ,
+                  'Oman' , 'Panama' , 'Paraguay' , 'Philippines' , 'Poland' , 'Portugal' , 'Puerto Rico', 'Qatar',
+                  'Republic of Serbia' , 'Romania', 'Russia' , 'Slovakia', 'Slovenia', 'South Africa', 'South Korea',
+                  'Spain' , 'Sri Lanka', 'Suriname' , 'Sweden' , 'Switzerland', 'Thailand' , 'The Bahamas' ,
+                  'Trinidad and Tobago', 'Turkey' , 'Turkmenistan', 'USA' , 'Ukraine' , 'United Arab Emirates',
+                  'Uruguay', 'Uzbekistan','China']
+              document.getElementById("aficaCB").checked = true;
+              document.getElementById("asiaCB").checked = true;
+              document.getElementById("americaCB").checked = true;
+              document.getElementById("europeCB").checked = true;
+              updateData()
+              return
+
+          }
+
+
+
         filterCountries = [d.properties.name]
         document.getElementById("aficaCB").checked = false;
         document.getElementById("asiaCB").checked = false;
