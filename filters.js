@@ -70,7 +70,7 @@ function checkBoxSex(box){
 }
 
 function checkBoxRegion(box){
-    if (filterCountries.length == 1){
+    if (filterCountries.length == 1 && document.getElementById("aficaCB").checked == false){    //africa only country
         filterCountries = []
     }
 

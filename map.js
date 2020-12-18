@@ -191,6 +191,11 @@ function ready(error, topo) {
             tooltipMap.append('text').text("Gdp p/ Capita: ").style("font-size", '18px');
             tooltipMap.append('text').text(d.properties.gdpPerCap).style("font-size", '18px').style("font-weight", 'normal');
           }
+          else{
+              tooltipMap.append("div");
+              tooltipMap.append('text').text("No data").style("font-size", '18px');
+
+          }
       })
       .on('mouseout', function(d){
         d3.select(this).attr("fill",getColor(d))
@@ -198,6 +203,32 @@ function ready(error, topo) {
 
       })
       .on("click", function(d){                       //CLICK
+          console.log(d)
+
+          if (filterCountries.length === 1 && document.getElementById("aficaCB").checked == false && d.properties.name === filterCountries[0]){
+              filterCountries = ['Albania' , 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan' , 'Belarus',
+                  'Belgium' , 'Belize', 'Brazil' , 'Bulgaria' ,'Bosnia and Herzegovina' ,'Canada' ,'Chile' , 'Colombia',
+                  'Costa Rica' , 'Croatia', 'Cuba' , 'Cyprus', 'Czech Republic' , 'Denmark' , 'Dominican Republic' ,
+                  'Ecuador' , 'El Salvador' , 'England' , 'Estonia' , 'Fiji' , 'Finland' , 'France' , 'Georgia' ,
+                  'Germany' , 'Greece' , 'Guatemala','Guyana' , 'Hungary' , 'Iceland' ,'Ireland', 'Israel', 'Italy',
+                  'Jamaica', 'Japan' , 'Kazakhstan' ,'Kuwait' ,'Kyrgyzstan' ,'Latvia', 'Lithuania' , 'Luxembourg',
+                  'Mexico' , 'Mongolia' , 'Montenegro', 'Netherlands' , 'New Zealand' , 'Nicaragua' , 'Norway' ,
+                  'Oman' , 'Panama' , 'Paraguay' , 'Philippines' , 'Poland' , 'Portugal' , 'Puerto Rico', 'Qatar',
+                  'Republic of Serbia' , 'Romania', 'Russia' , 'Slovakia', 'Slovenia', 'South Africa', 'South Korea',
+                  'Spain' , 'Sri Lanka', 'Suriname' , 'Sweden' , 'Switzerland', 'Thailand' , 'The Bahamas' ,
+                  'Trinidad and Tobago', 'Turkey' , 'Turkmenistan', 'USA' , 'Ukraine' , 'United Arab Emirates',
+                  'Uruguay', 'Uzbekistan','China']
+              document.getElementById("aficaCB").checked = true;
+              document.getElementById("asiaCB").checked = true;
+              document.getElementById("americaCB").checked = true;
+              document.getElementById("europeCB").checked = true;
+              updateData()
+              return
+
+          }
+
+
+
         filterCountries = [d.properties.name]
         document.getElementById("aficaCB").checked = false;
         document.getElementById("asiaCB").checked = false;
@@ -235,10 +266,13 @@ function ready(error, topo) {
 
       if (per100kVis){
         for (sex in pieData1){  //merge dicts
-          pieData1[sex] /= totalPopPSex[sex]
+          pieData1[sex] *= 100000/totalPopPSex[sex]
+          pieData1[sex]=pieData1[sex].toFixed(2)
         }
         for (age in pieData2){
-          pieData2[age] /= totalPopPAge[age]
+          pieData2[age] *= 100000/totalPopPAge[age]
+          pieData2[age]=pieData2[age].toFixed(2)
+
         }
       }
 

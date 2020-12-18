@@ -20,6 +20,11 @@ var svgPie2 = d3.select("#pieChart2")
   .append("g")
     .attr("transform", "translate(" + (width/4 - 70) + "," + radius + ")");
 
+
+var tooltipMap = d3.select('#tooltipPie');
+
+
+
 //LABELS
 var lab = document.getElementById("sexLabel")
 lab.innerHTML="Sex:"
@@ -51,7 +56,9 @@ function updatePie(svgPie, pieData){
     .value(function(d) {return d.value; })
     .sort(function(a, b) { return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
     var data_ready = pie(d3.entries(pieData))
+    console.log(data_ready)
 
+    console.log(pieData)
     // map to data
     var u = svgPie.selectAll("path")
         .data(data_ready)
@@ -59,6 +66,28 @@ function updatePie(svgPie, pieData){
     u
         .enter()
         .append('path')
+            .on('mouseover', function(d){
+                d3.select(this).attr("fill",function(d){return d3.rgb(color(d.data.key)).brighter(1);})
+
+
+                tooltipMap.html("  ")
+                    .style('color', 'black')
+                    .style("font-size", '30px')
+                    .style('display', 'block')
+                    .style("font-weight", 'bolder')
+                    .style('left', (d3.event.pageX + 20) + "px")
+                    .style('top', (d3.event.pageY) + "px");
+
+                tooltipMap.append("div");
+                tooltipMap.append('text').text("Cases: " + d.data.value).style("font-size", '18px');
+
+                }
+            )
+        .on('mouseout', function(d){
+            d3.select(this).attr("fill",function(d){ return(color(d.data.key)) })
+            if (tooltipMap) tooltipMap.style('display', 'none');})
+
+
         .merge(u)
         .attr('d', arcGenerator)
         .attr('fill', function(d){ return(color(d.data.key)) })
@@ -88,4 +117,23 @@ function updatePie(svgPie, pieData){
         .exit()
         .remove()
 
+}
+
+function getColor(d){
+    if (d.properties.name in data){
+        var c = data[d.properties.name];
+        var per100k = 100000 * c.ctotal / c.cpopulation;
+
+        d.properties.suicides = c.total
+        d.properties.suicidesPerCapita = per100k
+        d.properties.population = c.population
+        d.properties.gdp = c.cgdp
+        d.properties.gdpPerCap = c.cgdpPerCap
+
+        if(per100kVis)
+            return colorScale(per100k);
+        else
+            return colorScale(c.total)
+    }
+    return "black"
 }
