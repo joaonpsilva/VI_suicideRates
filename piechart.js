@@ -56,7 +56,9 @@ function updatePie(svgPie, pieData){
     .value(function(d) {return d.value; })
     .sort(function(a, b) { return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
     var data_ready = pie(d3.entries(pieData))
+    console.log(data_ready)
 
+    console.log(pieData)
     // map to data
     var u = svgPie.selectAll("path")
         .data(data_ready)
@@ -77,10 +79,7 @@ function updatePie(svgPie, pieData){
                     .style('top', (d3.event.pageY) + "px");
 
                 tooltipMap.append("div");
-                tooltipMap.append('text').text("Cases: ").style("font-size", '18px');
-                tooltipMap.append("div");
-                tooltipMap.append('text').text("Percentage: ").style("font-size", '18px');
-
+                tooltipMap.append('text').text("Cases: " + d.data.value).style("font-size", '18px');
 
                 }
             )

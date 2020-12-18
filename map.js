@@ -205,7 +205,7 @@ function ready(error, topo) {
       .on("click", function(d){                       //CLICK
           console.log(d)
 
-          if (filterCountries.length === 1 && d.properties.name === filterCountries[0]){
+          if (filterCountries.length === 1 && document.getElementById("aficaCB").checked == false && d.properties.name === filterCountries[0]){
               filterCountries = ['Albania' , 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan' , 'Belarus',
                   'Belgium' , 'Belize', 'Brazil' , 'Bulgaria' ,'Bosnia and Herzegovina' ,'Canada' ,'Chile' , 'Colombia',
                   'Costa Rica' , 'Croatia', 'Cuba' , 'Cyprus', 'Czech Republic' , 'Denmark' , 'Dominican Republic' ,
@@ -266,10 +266,13 @@ function ready(error, topo) {
 
       if (per100kVis){
         for (sex in pieData1){  //merge dicts
-          pieData1[sex] /= totalPopPSex[sex]
+          pieData1[sex] *= 100000/totalPopPSex[sex]
+          pieData1[sex]=pieData1[sex].toFixed(2)
         }
         for (age in pieData2){
-          pieData2[age] /= totalPopPAge[age]
+          pieData2[age] *= 100000/totalPopPAge[age]
+          pieData2[age]=pieData2[age].toFixed(2)
+
         }
       }
 
