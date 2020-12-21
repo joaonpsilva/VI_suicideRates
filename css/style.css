@@ -87,10 +87,10 @@
   
   /* Section Images */
   section#home {
-    background: url('https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/01/08/10/aokigahara-forest.jpg') no-repeat center center/cover;;
+    background: url('../images/forest.jpg') no-repeat center center/cover;;
   }
 
   section#authors {
-    background: url('https://geotg.com/wp-content/uploads/2017/11/large_hero_image2.png') no-repeat center center/cover;;
+    background: url('../images/endpage.png') no-repeat center center/cover;;
   }
 
