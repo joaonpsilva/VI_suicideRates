@@ -6,3 +6,7 @@ Bernardo Rodrigues, 88835
 Run index.html inside server. 
 Ex: install Live Server extension for VSCode.
 
+Result:
+
+![Model](result.png)
+
